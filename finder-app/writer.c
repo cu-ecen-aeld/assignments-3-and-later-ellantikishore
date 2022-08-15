@@ -28,6 +28,7 @@ int main(int argc, char **argv)
 	{
 		syslog(LOG_ERR, "error while writing data to file \"%s\"",
 				argv[1]);
+		fclose(fptr);
 		return 1;
 	}
 	syslog(LOG_DEBUG, "writing \" %s \" to file \"%s\"",argv[2],argv[1]);
@@ -36,6 +37,8 @@ int main(int argc, char **argv)
 	 * when we execute this binary from shell script
 	 * and if we return 1, script will get terminated.
 	 */
+	fclose(fptr);
+	closelog();
 	return 0;
 }
 
