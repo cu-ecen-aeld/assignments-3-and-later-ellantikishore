@@ -8,7 +8,7 @@ int main(int argc, char **argv)
 	if(argc < 3)
 	{
         	syslog(LOG_ERR, "invalid number of arguments, expecting 2, received : %d", argc);
-		return -1;
+		return 1;
 	}	
 /*
 	if(access(argv[1], F_OK) !=0)
@@ -22,13 +22,13 @@ int main(int argc, char **argv)
 	{
 		syslog(LOG_ERR, "not able to open the specified file %s",
 				argv[1]);
-		return -1;
+		return 1;
 	}
 	if(fprintf(fptr,"%s", argv[2]) < 0)
 	{
 		syslog(LOG_ERR, "error while writing data to file \"%s\"",
 				argv[1]);
-		return -1;
+		return 1;
 	}
 	syslog(LOG_DEBUG, "writing \" %s \" to file \"%s\"",argv[2],argv[1]);
 
