@@ -1,0 +1,23 @@
+/* output for file command */
+kishore@tej-lak$aarch64-none-linux-gnu-gcc -g -Wall -c -o writer.o writer.c
+kishore@tej-lak$
+kishore@tej-lak$file writer.o 
+writer.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), with debug_info, not stripped
+
+
+/* output for print sysroot */
+kishore@tej-lak$
+kishore@tej-lak$
+kishore@tej-lak$aarch64-none-linux-gnu-gcc -print-sysroot
+/opt/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin/../aarch64-none-linux-gnu/libc
+kishore@tej-lak$
+
+
+
+/*output for printing sysroot with "-v" option */
+kishore@tej-lak$aarch64-none-linux-gnu-gcc -print-sysroot -v
+Using built-in specs.
+COLLECT_GCC=aarch64-none-linux-gnu-gcc
+COLLECT_LTO_WRAPPER=/opt/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin/../libexec/gcc/aarch64-none-linux-gnu/10.2.1/lto-wrapper
+/opt/gcc-arm-10.2-2020.11-x86_64-aarch64-none-linux-gnu/bin/../aarch64-none-linux-gnu/libc
+kishore@tej-lak$

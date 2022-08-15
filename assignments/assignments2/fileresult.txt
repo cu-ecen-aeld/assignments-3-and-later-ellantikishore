@@ -1,0 +1,7 @@
+* output for file command */
+kishore@tej-lak$aarch64-none-linux-gnu-gcc -g -Wall -c -o writer.o writer.c
+kishore@tej-lak$
+kishore@tej-lak$file writer.o
+writer.o: ELF 64-bit LSB relocatable, ARM aarch64, version 1 (SYSV), with debug_info, not stripped
+
+
