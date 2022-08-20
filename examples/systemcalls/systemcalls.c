@@ -1,5 +1,9 @@
 #include "systemcalls.h"
-
+#include "stdlib.h"
+#include "unistd.h"
+#include "sys/types.h"
+#include "sys/wait.h"
+#include "fcntl.h"
 /**
  * @param cmd the command to execute with system()
  * @return true if the command in @param cmd was executed
@@ -16,7 +20,10 @@ bool do_system(const char *cmd)
  *   and return a boolean true if the system() call completed with success
  *   or false() if it returned a failure
 */
-
+    int res = 0;
+    res = system(cmd);
+    if(res <= 0)
+	    return false;
     return true;
 }
 
@@ -58,7 +65,49 @@ bool do_exec(int count, ...)
  *   as second argument to the execv() command.
  *
 */
+    pid_t pid = 0;
+    int status = 0;
 
+    pid = fork();
+    if(pid == 0)
+    {
+    	    execv(command[0],command);
+	    exit(1); //exit 0 represent success, hence retrining non-zero value
+    }
+    else if(pid == -1)
+    {
+	    return false;
+    }
+    else
+    {
+	    do {
+
+	    		if((pid = waitpid(pid, &status, WNOHANG)) == -1)
+	    		{
+		    		return false;
+	    		}
+			if(status !=0)
+			{
+				return false;
+			}
+			if(pid == 0)
+			{
+				sleep(1);
+			}
+			else if(WIFEXITED(status))
+			{
+				printf("child process exited normally, status = %d\n", WEXITSTATUS(status));
+				return true;;
+			}
+			else
+			{
+				printf("child exited with error\n");
+				return false;
+			}
+	    }while(pid == 0);
+    }
+
+    
     va_end(args);
 
     return true;
@@ -92,6 +141,60 @@ bool do_exec_redirect(const char *outputfile, int count, ...)
  *   The rest of the behaviour is same as do_exec()
  *
 */
+    int fd = open(outputfile, O_RDWR | O_CREAT, 0644);
+    int status = 0;
+    if(fd < 0)
+    {
+	    printf("error in creating file");
+	    return false;
+    }
+    
+    pid_t pid = fork();
+    if(pid == -1)
+    {
+	    printf("error is creating child process\n");
+	    return false;
+    }
+    else if(pid == 0)
+    {
+	    if(dup2(fd,1) < 0)
+	    {
+		    printf("dup2 error\n");
+	    }
+	    close(fd);
+	    execv(command[0], command);
+	    exit(1); //non-zero exit stands for error
+    }
+
+    else
+    {
+	    do {
+
+	    		if((pid = waitpid(pid, &status, WNOHANG)) == -1)
+	    		{
+		    		return false;
+	    		}
+			if(status != 0)
+			{
+				return false;
+			}
+			if(pid == 0)
+			{
+				sleep(1);
+			}
+			else if(WIFEXITED(status))
+			{
+				printf("child process exited normally, status = %d\n", WEXITSTATUS(status));
+				return true;;
+			}
+			else
+			{
+				printf("child exited with error\n");
+				return false;
+			}
+	    }while(pid == 0);
+    }
+
 
     va_end(args);
 

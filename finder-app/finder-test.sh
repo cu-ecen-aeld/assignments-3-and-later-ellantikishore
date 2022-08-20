@@ -41,11 +41,12 @@ else
 	exit 1
 fi
 
-echo "Removing the old writer utility and compiling as a native application"
-make clean
+#commented below block as part of assignment-3 part1
+#echo "Removing the old writer utility and compiling as a native application"
+#make clean
 
-echo "Generating new Bianries"
-make
+#echo "Generating new Bianries"
+#make
 
 for i in $( seq 1 $NUMFILES)
 do
